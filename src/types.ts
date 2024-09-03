@@ -220,6 +220,25 @@ export interface ISession {
   state: string;
 }
 
+/**
+ * See https://jmap.io/spec-core.html#the-statechange-object
+ */
+export type TypeName =
+  | "Mailbox"
+  | "Email"
+  | "Thread"
+  | "Identity"
+  | "Vacation"
+
+export type ITypeState = { [typeName in "Email" | "Mailbox" ]: string }
+export interface IStateChange {
+  type: string; // Will always be 'StateChange'
+  changed: { [accountId: string]: ITypeState };
+}
+export interface IPing {
+  interval: number;
+}
+export type PushMessage = IStateChange | IPing;
 export interface EmailHeader {
   name: string;
   value: string;

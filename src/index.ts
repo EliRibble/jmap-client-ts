@@ -7,6 +7,7 @@ import {
   IMailboxGetResponse,
   IMailboxSetResponse,
   ISession,
+  PushMessage,
   IEmailGetArguments,
   IMailboxGetArguments,
   IMailboxSetArguments,
@@ -156,6 +157,40 @@ export class Client {
     return this.request<IEmailSubmissionSetResponse>('EmailSubmission/set', args);
   }
 
+  public async subscribeToEvents(url: string, callback: (type: string, message: PushMessage) => void) {
+    // const response = await this.transport.get<IStateChange>(url, this.httpHeaders);
+    const response = await fetch(url, {headers: this.httpHeaders});
+    const reader = response.body!.pipeThrough(new TextDecoderStream()).getReader();
+    let buffer = "";
+    while (true) {
+      const {value, done} = await reader.read();
+      if (done) {
+        console.log("Event stream done.");
+        return;
+      }
+      // Gather data until we have two newlines, one for the 'event: <type>\n' the
+      // other for the 'data: <data>\n' line.
+      buffer = buffer + value;
+      const lines = buffer.split("\n")
+      if (lines.length < 2) {
+	// console.log("Not enough lines in the buffer", lines.length);
+        continue;
+      }
+      // Add 1 for each newline between the lines, and a final one for the separator newline
+      buffer = buffer.substring(lines[0].length + 1 + lines[1].length + 2);
+      let colonIndex = lines[0].indexOf(":");
+      if (colonIndex === -1) {
+        throw new Error("Missing correct event format in '" + lines[0] + "'. It should be 'event: <type>'");
+      }
+      const eventType = lines[0].substring(colonIndex+1).trim();
+      colonIndex = lines[1].indexOf(":");
+      if (colonIndex === -1) {
+        throw new Error("Missing correct data format in '" + lines[1] + "'. It should be 'data: <data>'");
+      }
+      const data = JSON.parse(lines[1].substring(colonIndex+1));
+      callback(eventType, data);
+    }
+  }
   public upload(buffer: ArrayBuffer, type = 'application/octet-stream'): Promise<IUploadResponse> {
     const uploadUrl = this.getSession().uploadUrl;
     const accountId = this.getFirstAccountId();
