@@ -262,6 +262,7 @@ export interface IEmailProperties {
   createdModSeq: number;
   updatedModSeq: number;
   receivedAt: IUtcDate;
+  sentAt: IUtcDate | null;
   headers: EmailHeader[] | null;
 }
 
