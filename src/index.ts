@@ -29,6 +29,8 @@ import {
   IUploadResponse,
   IEmailImportArguments,
   IEmailImportResponse,
+  IThreadChangesArguments,
+  IThreadChangesResponse,
   IThreadGetArguments,
   IThreadGetResponse,
 } from './types';
@@ -137,6 +139,9 @@ export class Client {
 
   public thread_get(args: IThreadGetArguments): Promise<IThreadGetResponse> {
     return this.request<IThreadGetResponse>('Thread/get', args);
+  }
+  public thread_changes(args: IThreadChangesArguments): Promise<IThreadChangesResponse> {
+    return this.request<IThreadChangesResponse>('Thread/changes', args);
   }
 
   public emailSubmission_get(

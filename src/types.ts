@@ -8,6 +8,7 @@ export type IMethodName =
   | 'Email/set'
   | 'Email/import'
   | 'Thread/get'
+  | 'Thread/changes'
   | 'EmailSubmission/get'
   | 'EmailSubmission/changes'
   | 'EmailSubmission/set';
@@ -465,6 +466,8 @@ export interface IMailboxEmailList {
 export type IEmailChangesArguments = IChangesArguments;
 
 export type IEmailChangesResponse = IChangesResponse;
+
+export type IThreadChangesArguments = IChangesArguments;
 
 export type IThreadChangesResponse = IChangesResponse;
 
