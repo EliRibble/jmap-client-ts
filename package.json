@@ -20,12 +20,23 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/linagora/jmap-client-ts.git"
+    "url": "git+https://github.com/eliribble/jmap-client-ts.git"
   },
   "keywords": [
     "jmap"
   ],
-  "author": "Alexandre Lagane",
+  "contributors": [
+    {
+      "name": "Alexandre Lagane",
+      "email": null,
+      "url": null
+    },
+    {
+      "name": "Eli Ribble",
+      "email": "eli@theribbles.org",
+      "url": null
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/linagora/jmap-client-ts/issues"
