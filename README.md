@@ -30,3 +30,12 @@ client.mailbox_get({
     ids: null,
 })
 ```
+
+## Tests
+
+Tests use Jest.
+
+```
+npm install --include-dev
+npm run test
+```
